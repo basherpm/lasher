@@ -149,6 +149,6 @@ if [ -n "$(command_path "$command")" ]; then
     print_help "$command"
   fi
 else
-  echo "lasher: no such command '$command'" >&2
+  echo "no such command '$command'" >&2
   exit 1
 fi
