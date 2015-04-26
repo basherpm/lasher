@@ -12,4 +12,4 @@ if [ -z "$command" ]; then
   exec lasher-_help lasher
 fi
 
-lasher-_help "lasher-$command"
+lasher-_help lasher "$command"

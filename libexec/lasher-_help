@@ -2,7 +2,7 @@
 #
 # Summary: Display help for a command
 #
-# Usage: lasher _help [--usage] <command>
+# Usage: lasher _help [--usage] [<prefix>] <command>
 #
 # Parses and displays help contents from a command's source file.
 #
@@ -108,8 +108,6 @@ print_help() {
   if [ -n "$usage" -o -n "$summary" ]; then
     if [ -n "$usage" ]; then
       echo "$usage"
-    else
-      echo "Usage: lasher ${command}"
     fi
     if [ -n "$help" ]; then
       echo
@@ -135,20 +133,28 @@ if [ "$1" = "--usage" ]; then
   shift
 fi
 
-command="$1"
+prefix="$1"
+command="$2"
 
 if [ -z "$command" ]; then
-  lasher-_help lasher-_help
+  command="$prefix"
+  full_command="$command"
+else
+  full_command="$prefix-$command"
+fi
+
+if [ -z "$command" ]; then
+  lasher-_help lasher _help
   exit 1
 fi
 
-if [ -n "$(command_path "$command")" ]; then
+if [ -n "$(command_path "$full_command")" ]; then
   if [ -n "$usage" ]; then
-    print_usage "$command"
+    print_usage "$full_command"
   else
-    print_help "$command"
+    print_help "$full_command"
   fi
 else
-  echo "no such command '$command'" >&2
+  echo "$prefix: no such command '$command'" >&2
   exit 1
 fi

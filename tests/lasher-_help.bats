@@ -6,13 +6,13 @@ load test_helper
   run lasher-_help
 
   assert_failure
-  assert_line "Usage: lasher _help [--usage] <command>"
+  assert_line "Usage: lasher _help [--usage] [<prefix>] <command>"
 }
 
 @test "invalid command" {
-  run lasher-_help invalid_command
+  run lasher-_help command invalid_subcommand
 
-  assert_failure "lasher: no such command 'invalid_command'"
+  assert_failure "command: no such command 'invalid_subcommand'"
 }
 
 @test "shows help for a specific command" {
@@ -24,7 +24,7 @@ load test_helper
 echo hello
 SH
 
-  run lasher-_help command-hello
+  run lasher-_help command hello
 
   assert_success
   assert_output <<SH
@@ -42,7 +42,7 @@ SH
 echo hello
 SH
 
-  run lasher-_help command-hello
+  run lasher-_help command hello
 
   assert_success
   assert_output <<SH
@@ -61,7 +61,7 @@ SH
 echo hello
 SH
 
-  run lasher-_help --usage command-hello
+  run lasher-_help --usage command hello
 
   assert_success "Usage: command hello <world>"
 }
@@ -77,7 +77,8 @@ SH
 echo hello
 SH
 
-  run lasher-_help command-hello
+  run lasher-_help command hello
+
   assert_success
   assert_output <<SH
 Usage: command hello <world>
@@ -101,7 +102,7 @@ SH
 echo hello
 SH
 
-  run lasher-_help command-hello
+  run lasher-_help command hello
 
   assert_success
   assert_output <<SH
